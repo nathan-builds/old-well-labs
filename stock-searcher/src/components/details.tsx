@@ -27,6 +27,7 @@ const Details: React.FC<DetailsProps> = ({ ticker }) => {
 
         const [details, setDetails] = useState<Detail[]>([]);
 
+
         useEffect(() => {
             StockApiService.getDetailedStockInformation(ticker).then(setDetails);
         }, [ticker]);

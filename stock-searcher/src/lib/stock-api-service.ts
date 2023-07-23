@@ -1,15 +1,14 @@
 import {
     Detail,
-    AppState,
     DataPoint,
     ChartData,
-    StockDetails, FullDataPoint, GenericStockInformation, GlobalResponse
+    StockDetails, GenericStockInformation, GlobalResponse
 } from '@/lib/models';
 
 const apiKey = 'UZIV4BJBISXTBDTH';
-const isLive = false;
 
-import { Datum, Serie } from '@nivo/line';
+
+import { Datum } from '@nivo/line';
 import { numberFormat } from '@/lib/stockUtils';
 
 
@@ -88,6 +87,7 @@ export class StockApiService {
 
 
         return {
+            ticker: globalDetails['Global Quote']['01. symbol'],
             percentChange: globalDetails['Global Quote']['10. change percent'],
             currentPrice: globalDetails['Global Quote']['05. price'],
             name: stockDetails.Name,

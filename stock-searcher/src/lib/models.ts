@@ -38,6 +38,7 @@ export interface GlobalQuote {
 
 
 export interface GenericStockInformation {
+    ticker:string,
     currentPrice: string,
     percentChange: string,
     name:string,

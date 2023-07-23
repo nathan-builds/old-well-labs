@@ -6,14 +6,14 @@ import { numberFormat } from '@/lib/stockUtils';
 
 export interface StockInfoProps {
     ticker: string
-    name: string,
 }
 
 
-const StockInfo: React.FC<StockInfoProps> = ({ ticker, name }) => {
+const StockInfo: React.FC<StockInfoProps> = ({ ticker}) => {
 
 
     const [stockInfo, setStockInfo] = useState<GenericStockInformation>({
+        ticker:'',
         currentPrice: '0',
         percentChange: '',
         name: '',
@@ -25,7 +25,6 @@ const StockInfo: React.FC<StockInfoProps> = ({ ticker, name }) => {
     useEffect(() => {
         StockApiService.getGenericStockInformation(ticker)
             .then(info => {
-                console.log(info);
                 setStockInfo(info);
             });
     }, [ticker]);
@@ -34,7 +33,7 @@ const StockInfo: React.FC<StockInfoProps> = ({ ticker, name }) => {
     return (
         <div className="text-[#EDEDED] flex flex-col gap-4 p-3">
             <div className="flex flex-col">
-                <span className="font-bold text-3xl">{ticker}</span>
+                <span className="font-bold text-3xl">{stockInfo.ticker}</span>
                 <span>{stockInfo.name}</span>
                 <span className="text-[#71716F] font-medium">{stockInfo.sector}</span>
             </div>
