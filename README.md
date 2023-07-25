@@ -1,4 +1,5 @@
 # Steps to run
+Prerequisite: Node installed on system from https://nodejs.org/en/download
 1. Clone the repo
 2. cd into old-well-labs/stock-searcher
 3. Run the command ``` npm install ```
