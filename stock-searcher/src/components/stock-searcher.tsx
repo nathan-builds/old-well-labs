@@ -10,7 +10,12 @@ import dynamic from 'next/dynamic';
 
 const StockChart = dynamic(() => import ('../components/stock-chart'), { ssr: false });
 
+/***
+ * Main component that displays all the stock information
+ * @constructor
+ */
 const StockSearcher = ()=>{
+    // keep track of recent searches here
     const [recentSearches, setRecentSearches] = useState<SelectedStock[]>([]);
     const [currentStock, setCurrentStock] = useState<SelectedStock>({ id: 0, name: 'AAPL', title: 'Apple Inc.' });
 

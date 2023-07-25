@@ -11,6 +11,12 @@ export interface DetailsProps {
 }
 
 
+/***
+ * The details for a given stock, the specific details are generic as long as they are in a
+ * Detail type then it can be displayed
+ * @param ticker
+ * @constructor
+ */
 const Details: React.FC<DetailsProps> = ({ ticker }) => {
 
         const [details, setDetails] = useState<Detail[]>([]);

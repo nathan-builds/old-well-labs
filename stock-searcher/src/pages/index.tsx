@@ -4,6 +4,11 @@ import { createContext, useState } from 'react';
 import { setRequestMeta } from 'next/dist/server/request-meta';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
+
+/***
+ * Error context available to all the components, any component that catches an error
+ * can set the error to true and it will display the error dialog
+ */
 export const ErrorContext = createContext({
     error: false,
     setError: (val: boolean) => {

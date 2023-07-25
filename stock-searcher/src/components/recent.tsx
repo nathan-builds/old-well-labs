@@ -8,9 +8,14 @@ export interface RecentProps {
 }
 
 
+/***
+ * Display a list of recent stock searches, each item can be clicked on to revisit the stock details
+ * @param props
+ * @constructor
+ */
 const Recent: React.FC<RecentProps> = (props) => {
 
-
+    // shorten long string values to fit
     const truncate = (title: string) => {
         return title.length > 50? <>{title.substring(0,50)}&hellip;</> : title;
     };

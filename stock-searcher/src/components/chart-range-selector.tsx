@@ -7,9 +7,15 @@ export interface RangeProps {
     changeRange: (range: TimeRange) => void;
 }
 
+/***
+ * This is the range selector for the  chart consisting of 5D,MTD,L3Y,L5Y values
+ * @param props
+ * @constructor
+ */
 
 const ChartRangeSelector: React.FC<RangeProps> = (props) => {
 
+    // alert chart to range change
     const onRangeChange = (range: TimeRange) => {
         props.changeRange(range);
     };

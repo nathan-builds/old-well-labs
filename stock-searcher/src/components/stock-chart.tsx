@@ -11,6 +11,11 @@ export interface ChartProps {
     ticker: string;
 }
 
+/***
+ * Main chart to display actual stock data with variable ranges
+ * @param props
+ * @constructor
+ */
 const StockChart: React.FC<ChartProps> = (props) => {
 
     const [chartData, setChartData] = useState<ChartData>(initialChartState);

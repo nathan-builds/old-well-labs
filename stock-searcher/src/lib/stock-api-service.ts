@@ -5,6 +5,7 @@ import {
     StockDetails, GenericStockInformation, GlobalResponse
 } from '@/lib/models';
 
+// would have this as an environment variable, fine for now here
 const apiKey = 'UZIV4BJBISXTBDTH';
 
 
@@ -16,6 +17,11 @@ import { numberFormat, roundTwoDecimals } from '@/lib/stockUtils';
 export class APIStockService {
     static baseURL = `https://www.alphavantage.co/query?`;
 
+    /***
+     * Get the info for different time periods. Intra day is needed to show better data points for 5D and MTD intervals,
+     * daily Data is needed for the rest of the time periods
+     * @param stockSymbol
+     */
     static async getStockChartData(stockSymbol: string): Promise<ChartData> {
         const intraDayURL = `${this.baseURL}function=TIME_SERIES_INTRADAY&symbol=${stockSymbol}&interval=5min&outputsize=full&apikey=${apiKey}`;
         const dailyURL = `${this.baseURL}function=TIME_SERIES_DAILY&symbol=${stockSymbol}&interval=5min&outputsize=full&apikey=${apiKey}`;
@@ -72,6 +78,10 @@ export class APIStockService {
         };
     };
 
+    /***
+     * Get generic stock information, this requires 2 endpoints due to how the data is structured in the API
+     * @param ticker
+     */
     static async getGenericStockInformation(ticker: string): Promise<GenericStockInformation> {
         const overviewURL = `${this.baseURL}function=OVERVIEW&symbol=${ticker}&apikey=${apiKey}`;
         const globalURL = `${this.baseURL}function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${apiKey}`;
@@ -91,6 +101,12 @@ export class APIStockService {
         };
     }
 
+    /***
+     * Get the detailed stock information, again this is a combination of 2 endpoints that are needed to display the
+     * necessary details for the given stock. Put each of the details that should be displayed into a Detail type.
+     * This allows a better visual display of the parameter rather than just the API object name
+     * @param ticker
+     */
     static async getDetailedStockInformation(ticker: string): Promise<Detail[]> {
         const overviewURL = `${this.baseURL}function=OVERVIEW&symbol=${ticker}&apikey=${apiKey}`;
         const globalURL = `${this.baseURL}function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${apiKey}`;
@@ -140,8 +156,15 @@ export class APIStockService {
 
 }
 
+/***
+ * Alpha Vantage API has weird object keys with spaces and numbers as well as the time being a key itself.
+ * This 'cleans' the data to put it in a more workable form for all downstream functions that need/want to use it.
+ * @param data data to clean
+ * @param timeSeries time series key
+ * @param isSMA is it SMA data or price data
+ */
 const cleanAPIData = (data: any, timeSeries: string, isSMA: boolean): DataPoint[] => {
-
+    console.log('DATA', data)
     if (!isSMA) {
         return Object.keys(data[timeSeries]).map(timeKey => {
             return {
@@ -166,7 +189,11 @@ const cleanAPIData = (data: any, timeSeries: string, isSMA: boolean): DataPoint[
     }
 };
 
-
+/***
+ * Filter the data according to the given filter function
+ * @param data sets of data to be filtered
+ * @param filterFunc function used to filter
+ */
 const dateRangeFilter = (data: DataPoint[][], filterFunc: (dataPoint: DataPoint) => boolean): Datum[][] => {
     return data.map(dataSet => {
         return dataSet
@@ -177,6 +204,12 @@ const dateRangeFilter = (data: DataPoint[][], filterFunc: (dataPoint: DataPoint)
 
 };
 
+/**
+ * More complicated to get last five days as weekends are not in the data.
+ * Take the current day -1 because their data always starts one day behind at this API tier,
+ * and get the last 5 days of trading activity
+ * @param data
+ */
 const fiveDayHelperFilter = (data: DataPoint[]): Datum[] => {
     let day = new Date().getDate() - 1;
     let count = 5;
@@ -201,6 +234,10 @@ const fiveDayHelperFilter = (data: DataPoint[]): Datum[] => {
 };
 
 
+/***
+ * Adjust the date to start on a weekday
+ * @param date
+ */
 //0 = Sunday 6= Saturday
 const adjustDateToWeekday = (date: Date): Date => {
     if (date.getDay() === 0) {

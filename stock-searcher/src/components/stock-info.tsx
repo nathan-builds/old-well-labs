@@ -12,7 +12,11 @@ export interface StockInfoProps {
     ticker: string;
 }
 
-
+/***
+ * Generic stock information such as price, market, sector ...etc
+ * @param ticker
+ * @constructor
+ */
 const StockInfo: React.FC<StockInfoProps> = ({ ticker }) => {
 
     const errorContext = useContext(ErrorContext);

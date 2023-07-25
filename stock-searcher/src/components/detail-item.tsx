@@ -5,6 +5,12 @@ export interface ItemProps {
     itemDetails: Detail;
 }
 
+/***
+ *
+ * @param itemDetails Contains the data point to display along with the displayable name for the param
+ * @constructor
+ */
+
 export const DetailItem: React.FC<ItemProps> = ({ itemDetails }) => {
     return (
         <div className="flex flex-row justify-between border-b border-[#987C44] border-opacity-25 ">

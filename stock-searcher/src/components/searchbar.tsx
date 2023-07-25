@@ -12,6 +12,13 @@ export interface SearchProps {
 }
 
 
+/***
+ * Search bar for new tickers, the auto search feature is based on a list of common stocks
+ * in tickerSymbols. Ideally this would make request to the API to actually do a complete auto complete
+ * search but the API tier does not allow for that
+ * @param props
+ * @constructor
+ */
 const Searchbar: React.FC<SearchProps> = (props) => {
     const tickers = tickerSymbols.map((ticker, idx) => {
         return {
