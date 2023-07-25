@@ -8,31 +8,20 @@ export interface RangeProps {
 }
 
 
-const ChartRangeSelector:React.FC<RangeProps> = (props) => {
+const ChartRangeSelector: React.FC<RangeProps> = (props) => {
 
     const onRangeChange = (range: TimeRange) => {
-        props.changeRange(range)
+        props.changeRange(range);
     };
 
     return (
-        <Tabs defaultValue="1D" className="space-y-4 m-2">
+        <Tabs defaultValue="5D" className="space-y-4 m-2">
             <TabsList className="bg-[#262523] text-[#EDEDED]">
-                <TabsTrigger value="1D" onClick={e => onRangeChange('1D')}>1D</TabsTrigger>
-                <TabsTrigger onClick={e => onRangeChange('5D')} value="5D">
-                    5D
-                </TabsTrigger>
-                <TabsTrigger value="MTD" onClick={e => onRangeChange('MTD')}>
-                    MTD
-                </TabsTrigger>
-                <TabsTrigger value="YTD" onClick={e => onRangeChange('YTD')}>
-                    YTD
-                </TabsTrigger>
-                <TabsTrigger value="L3Y" onClick={e => onRangeChange('L3Y')}>
-                    L3Y
-                </TabsTrigger>
-                <TabsTrigger value="L5Y" onClick={e => onRangeChange('L5Y')}>
-                    L5Y
-                </TabsTrigger>
+                {['5D', 'MTD','YTD', 'L3Y', 'L5Y'].map((range, idx) =>
+                    <TabsTrigger key={idx} value={range} onClick={() => onRangeChange(range as TimeRange)}>
+                        {range}
+                    </TabsTrigger>
+                )}
             </TabsList>
         </Tabs>);
 

@@ -12,7 +12,7 @@ export interface SearchProps {
 }
 
 
-const NewSearch: React.FC<SearchProps> = (props) => {
+const Searchbar: React.FC<SearchProps> = (props) => {
     const tickers = tickerSymbols.map((ticker, idx) => {
         return {
             id: idx,
@@ -25,7 +25,6 @@ const NewSearch: React.FC<SearchProps> = (props) => {
 
     const handleOnSelect = (item: SelectedStock) => {
         // the item selected
-        console.log('NEW SEARCH!');
         props.onNewSearch(item);
     };
 
@@ -35,7 +34,7 @@ const NewSearch: React.FC<SearchProps> = (props) => {
 
     const formatResult = (item: SelectedStock) => {
         return (
-            <div className="flex flex-row text-xl med:text-2xl justify-between cursor-pointer p-2">
+            <div className="flex flex-row text-sm med:text-xl lg:text-xl justify-between cursor-pointer p-2">
                 <span>{item.name}</span>
                 <span> {item.title}</span>
             </div>
@@ -43,14 +42,16 @@ const NewSearch: React.FC<SearchProps> = (props) => {
     };
     return (
         <ReactSearchAutocomplete
+
             styling={{
                 backgroundColor: '#262523',
                 borderRadius: '10px',
                 border: 'none',
                 color: '#EDEDED',
-                hoverBackgroundColor: '#987C44'
+                hoverBackgroundColor: '#987C44',
             }}
             items={tickers}
+            placeholder={'Search for ticker'}
             onSelect={handleOnSelect}
             onFocus={handleOnFocus}
             autoFocus
@@ -61,4 +62,4 @@ const NewSearch: React.FC<SearchProps> = (props) => {
 
 };
 
-export default NewSearch;
+export default Searchbar;

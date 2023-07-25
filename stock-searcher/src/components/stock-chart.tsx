@@ -1,9 +1,11 @@
-import { ResponsiveLine, Serie } from '@nivo/line';
+import { ResponsiveLine } from '@nivo/line';
 import { chartTheme } from '@/lib/chart-theme';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ChartRangeSelector from '@/components/chart-range-selector';
-import { ChartData, initialChartState, monthDayFormat, TimeRange } from '@/lib/models';
-import { StockApiService } from '@/lib/stock-api-service';
+import { ChartData, chartFormat, initialChartState, TimeRange } from '@/lib/models';
+import { APIStockService } from '@/lib/stock-api-service';
+import { ErrorContext } from '@/pages';
+
 
 export interface ChartProps {
     ticker: string;
@@ -12,20 +14,28 @@ export interface ChartProps {
 const StockChart: React.FC<ChartProps> = (props) => {
 
     const [chartData, setChartData] = useState<ChartData>(initialChartState);
-    const [chartRange, setChartRange] = useState<TimeRange>('1D');
+    const [chartRange, setChartRange] = useState<TimeRange>('5D');
+    const [format, setChartFormat] = useState(chartFormat['5D']);
+    const errorContext = useContext(ErrorContext);
+
 
     useEffect(() => {
-        StockApiService.getStockChartData(props.ticker)
+        APIStockService.getStockChartData(props.ticker)
             .then(chartData => {
                     setChartData(chartData);
                 }
-            );
+            ).catch(e => errorContext.setError(true));
     }, [props]);
+
+    const changeRange = (range: TimeRange) => {
+        setChartRange(range);
+        setChartFormat(chartFormat[range]);
+    };
 
 
     return (
         <div className="h-full">
-            <ChartRangeSelector changeRange={setChartRange}></ChartRangeSelector>
+            <ChartRangeSelector changeRange={changeRange}></ChartRangeSelector>
             <ResponsiveLine
                 theme={chartTheme}
                 data={chartData[chartRange]}
@@ -49,7 +59,7 @@ const StockChart: React.FC<ChartProps> = (props) => {
                     tickRotation: 0,
                     legendOffset: 36,
                     legendPosition: 'middle',
-                    format: monthDayFormat
+                    format: format
                 }}
                 axisLeft={{
                     tickSize: 5,

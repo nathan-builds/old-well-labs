@@ -1,65 +1,34 @@
-import { Card, CardTitle } from '@/components/ui/card';
-import Details from '@/components/details';
-import dynamic from 'next/dynamic';
-import StockInfo from '@/components/stock-info';
-import { useState } from 'react';
+import StockSearcher from '@/components/stock-searcher';
+import { useSession } from 'next-auth/react';
+import { createContext, useState } from 'react';
+import { setRequestMeta } from 'next/dist/server/request-meta';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
-import Recent from '@/components/recent';
-
-import NewSearch, { SelectedStock } from '@/components/new-search';
-
-
-const StockChart = dynamic(() => import ('../components/ui/stock-chart'), { ssr: false });
+export const ErrorContext = createContext({
+    error: false,
+    setError: (val: boolean) => {
+    }
+});
 
 export default function Home() {
 
-    const [recentSearches, setRecentSearches] = useState<SelectedStock[]>([]);
-    const [currentStock, setCurrentStock] = useState<SelectedStock>({ id: 0, name: 'AAPL', title: 'Apple Inc.' });
+    const [errorState, setErrorState] = useState(false);
 
 
-    const onNewSearch = (stock: SelectedStock) => {
-        console.log('NEW SEARCH', stock);
-        setCurrentStock(stock);
-        setRecentSearches((prevState) => {
-            return [...prevState].filter(curr => curr.name != stock.name).concat([stock]);
-        });
-    };
-
+    // NOTE: This hook can be used to grab session for any components that need
+    // authentication/authorization as information about the user such as access token/ role can be stored
+    // in the session using next-auth framework. if(no_session) redirect user to login page
+    const { data: session } = useSession();
 
     return (
-        <div
-            className=" container flex flex-col md:flex md:flex-col max-w-4xl lg:flex lg:flex-row lg:max-w-7xl gap-5 mb-10 ">
-            <div className="flex flex-col gap-5">
-                <NewSearch onNewSearch={onNewSearch}></NewSearch>
-                <Card className="bg-[#262523] h-[200px] ">
-                    <StockInfo ticker={currentStock.name}></StockInfo>
-                </Card>
-                <Card className="bg-[#262523] h-[450px] overflow-hidden">
-                    <div className="h-5/6">
-                        <StockChart ticker={currentStock.name}/>
-                    </div>
-                </Card>
-                <Card className="bg-[#262523] h-[400px]  md:h-[200px] lg:h-[125px]">
-                    <Details ticker={currentStock.name}></Details>
-                </Card>
-            </div>
-            <Card className=" items-center bg-[#262523] h-[200px] min-w-[250px] lg:w-[400px] lg:h-[400px] overflow-y-scroll">
-                <div className='flex flex-row items-center justify-center'>
-                <CardTitle className="text-[#71716F] italic text m-2">Recent</CardTitle>
-                </div>
-                <Recent recentList={recentSearches} onRecentSelected={onNewSearch}></Recent>
-            </Card>
-        </div>
+        <ErrorContext.Provider value={{ error: false, setError: setErrorState }}>
+            <Dialog open={errorState} onOpenChange={() => setErrorState(false)}>
+                <DialogContent>
+                    Error occurred in API, please wait 60 seconds and refresh page
+                </DialogContent>
+            </Dialog>
+            <StockSearcher></StockSearcher>
+        </ErrorContext.Provider>
     );
 
 }
-
-// export const getServerSideProps: () => Promise<{ props: { state: AppState } }> = async () => {
-//     return {
-//         props: {
-//             state: await getAllStockInformation('TTD')
-//         }
-//     };
-// };
-
-//initialState: InferGetServerSidePropsType<typeof getServerSideProps>

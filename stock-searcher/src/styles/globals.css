@@ -15,14 +15,14 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  margin-top: 70px;
+  /*margin-top: 70px;*/
 
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #6c6c6c;
-  border-radius: 5px;
+  border-radius: 2px;
 
 }
 
