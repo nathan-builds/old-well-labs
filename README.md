@@ -10,7 +10,8 @@ Prerequisite: Node installed on system from https://nodejs.org/en/download
 # Design Considerations:
 Each component has been as designed in a way that makes it reusable in any part of the application. The auto complete search bar has  essentially been 
 "faked"  by providing a list of about 10,000 common stock tickers. In a real application, the app would make requests to the backend
-at keystroke intervals to populate the auto complete search feature but with the limitations of requests on the basic Alpha Vantage API tier, this was not possible.
+at keystroke intervals to populate the auto complete search feature but with the limitations of requests on the basic Alpha Vantage API tier, this was not possible. If there
+are any API issues to to the rate limiting of the basic tier a dialog will prompt you.
 
 # Authentication/Authorization
 I put in a quick framework for handling authentication and authorization using next-auth with NextJS in pages/api/auth/[...nextauth].ts Depending on the loading strategy, this can be done client or server side with NextJS, I have it set up quickly on the client side. I also added a couple methods that are commented 
