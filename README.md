@@ -6,6 +6,8 @@ Prerequisite: Node installed on system from https://nodejs.org/en/download
 4. Run the command ``` npm run dev ```
 5. Go to http://localhost:3000
 
+# Technologies Used:
+React, NextJS, Typescript, Tailwind CSS
 
 # Design Considerations:
 Each component has been as designed in a way that makes it reusable in any part of the application. The auto complete search bar has  essentially been 
