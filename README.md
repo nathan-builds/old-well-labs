@@ -1,4 +1,4 @@
-#NOTE
+# NOTE
 The API key has expired for this to function correctly with the Alpha Vantage API
 
 # Steps to run
