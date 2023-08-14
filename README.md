@@ -1,3 +1,6 @@
+#NOTE
+The API key has expired for this to function correctly with the Alpha Vantage API
+
 # Steps to run
 Prerequisite: Node installed on system from https://nodejs.org/en/download
 1. Clone the repo
